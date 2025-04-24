@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Recommendation History{% endblock %}
+{% block content %}
+<div class="card shadow-sm p-4">
+    <h2 class="mb-4">Recommendation History</h2>
+    {% if history %}
+        <ul class="list-group">
+            {% for item in history %}
+                <li class="list-group-item">
+                    <p><strong>Selected:</strong> {{ item.selected_food.food_name }}</p>
+                    <p><strong>Recommended:</strong></p>
+                    <ul>
+                        <li>{{ item.recommended_food_1.food_name }}</li>
+                        <li>{{ item.recommended_food_2.food_name }}</li>
+                        <li>{{ item.recommended_food_3.food_name }}</li>
+                    </ul>
+                    <small class="text-muted">{{ item.created_at }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recommendations yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

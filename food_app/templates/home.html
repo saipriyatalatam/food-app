@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="card shadow-sm p-4">
+    <h2 class="mb-4">Select a Food Item</h2>
+    <form method="get" class="mb-4">
+        <div class="mb-3">
+            <label for="food_group" class="form-label">Food Group</label>
+            <select name="food_group" id="food_group" class="form-select" onchange="this.form.submit()">
+                <option value="">Select a group</option>
+                {% for group in food_groups %}
+                    <option value="{{ group.food_group }}" {% if group.food_group == selected_group %}selected{% endif %}>{{ group.food_group }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+
+    {% if selected_group %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="food_item" class="form-label">Food Item</label>
+                <select name="food_item" id="food_item" class="form-select" required>
+                    <option value="">Select a food</option>
+                    {% for item in food_items %}
+                        <option value="{{ item.food_name }}">{{ item.food_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Get Recommendations</button>
+        </form>
+    {% endif %}
+
+    {% if recommendations %}
+        <div class="mt-5">
+            <h4>Recommendations for {{ selected_food.food_name }}</h4>
+            <ul class="list-group mt-2">
+                {% for rec in recommendations %}
+                    <li class="list-group-item">{{ rec.food_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
